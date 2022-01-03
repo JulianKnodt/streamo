@@ -6,16 +6,19 @@
     adt_const_params,
     array_from_fn,
     associated_type_defaults,
+    generic_associated_types,
+    hash_drain_filter,
     build_hasher_simple_hash_one
 )]
 #![allow(incomplete_features)]
 
 pub mod adapters;
 
-mod bloom;
-mod count;
-mod distinct;
-mod quantile;
+pub mod bloom;
+pub mod count;
+pub mod distinct;
+pub mod high_freq;
+pub mod quantile;
 //pub mod compactor;
 
 mod rand;

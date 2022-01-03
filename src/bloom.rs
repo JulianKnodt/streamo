@@ -15,7 +15,7 @@ impl<T: Hash, S: BuildHasher + Default, const N: usize> StreamProcessor<T>
     for BloomFilter<T, S, N>
 {
     fn new() -> Self {
-        assert!(N != 0);
+        assert_ne!(N, 0);
         Self {
             marker: Default::default(),
             hashers: Default::default(),
@@ -23,6 +23,7 @@ impl<T: Hash, S: BuildHasher + Default, const N: usize> StreamProcessor<T>
         }
     }
     fn process(&mut self, v: T) {
+        assert_ne!(N, 0);
         for h in &self.hashers {
             self.bitmap.set(h.hash_one(&v) as usize % Bitmap::<N>::BITS);
         }
@@ -31,6 +32,7 @@ impl<T: Hash, S: BuildHasher + Default, const N: usize> StreamProcessor<T>
     type Result = bool;
     type Args = T;
     fn query(&self, t: &T) -> bool {
+        assert_ne!(N, 0);
         self.hashers
             .iter()
             .all(|h| self.bitmap.get(h.hash_one(&t) as usize % Bitmap::<N>::BITS))

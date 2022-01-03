@@ -16,7 +16,7 @@ impl<T: Hash, S: BuildHasher + Default, const N: usize> StreamProcessor<T>
     for FlajoletMartin<T, S, N>
 {
     fn new() -> Self {
-        assert!(N != 0);
+        assert_ne!(N, 0);
         Self {
             marker: Default::default(),
             state: Default::default(),
@@ -24,12 +24,14 @@ impl<T: Hash, S: BuildHasher + Default, const N: usize> StreamProcessor<T>
         }
     }
     fn process(&mut self, v: T) {
+        assert_ne!(N, 0);
         self.bitmap
             .set_or_max(self.state.hash_one(v).trailing_zeros() as usize)
     }
 
     type Result = usize;
     fn query(&self, (): &()) -> usize {
+        assert_ne!(N, 0);
         let approx = |n: usize| (2f32.powi(n as i32) / PHI) as usize - 1;
 
         let rev = self.bitmap.bytes.iter().enumerate();
